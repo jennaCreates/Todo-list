@@ -5,6 +5,8 @@ const clearBtn = document.querySelector('.clear-tasks');
 const filter = document.querySelector('#filter');
 const taskInput = document.querySelector('#task');
 
+let tasks;
+
 // Load all event Listeners
 loadEventListeners();
 
@@ -24,15 +26,8 @@ function loadEventListeners(){
 
 //Get Tasks from Local Storage (LS)
 function getTasks(){
-  let tasks; //NOT-DRY
-  //This function sets a task variable and if there is nothing in the local storage it sets the tasks variable to an empty array.
-  if (localStorage.getItem('tasks') === null) {
-    tasks = [];
-    //Else, it sets tasks equal to whatever is in local storage.
-  } else {
-    //Local storage on stores strings so we are using JSON.parse to parse the strings as JSON.
-    tasks = JSON.parse(localStorage.getItem('tasks'));
-  }
+  
+  checkTasksFromLocalStorage();
 
   tasks.forEach(function(task){
     // Create li element
@@ -92,15 +87,8 @@ function addTask(e){
 
 // Store Task /   
 function storeTaskInLocalStorage(task){
-  let tasks; //NOT-DRY
-  //This function sets a task variable and if there is nothing in the local storage it sets the tasks variable to an empty array.
-  if(localStorage.getItem('tasks') === null){
-    tasks = [];
-  //Else, it sets tasks equal to whatever is in local storage.
-  } else {
-    //Local storage on stores strings so we are using JSON.parse to parse the strings as JSON.
-    tasks = JSON.parse(localStorage.getItem('tasks'));
-  }
+  checkTasksFromLocalStorage();
+  
   // Take the parameter and push it into the array tasks
   tasks.push(task);
   // Set it bask to local storage
@@ -121,15 +109,7 @@ function removeTask(e){
 
 // Remove from LS
 function removeTaskFromLocalStorage(taskItem){
-  let tasks; //NOT-DRY
-  //This function sets a task variable and if there is nothing in the local storage it sets the tasks variable to an empty array.
-  if (localStorage.getItem('tasks') === null) {
-    tasks = [];
-    //Else, it sets tasks equal to whatever is in local storage.
-  } else {
-    //Local storage on stores strings so we are using JSON.parse to parse the strings as JSON.
-    tasks = JSON.parse(localStorage.getItem('tasks'));
-  }
+  checkTasksFromLocalStorage();
 
   tasks.forEach(function(task, index){
     if(taskItem.textContent === task){
@@ -174,4 +154,15 @@ function filterTasks(e){
       task.style.display = 'none';
     }
   });
+}
+
+function checkTasksFromLocalStorage(){
+  //This function sets a task variable and if there is nothing in the local storage it sets the tasks variable to an empty array.
+  if (localStorage.getItem('tasks') === null) {
+    tasks = [];
+    //Else, it sets tasks equal to whatever is in local storage.
+  } else {
+    //Local storage on stores strings so we are using JSON.parse to parse the strings as JSON.
+    tasks = JSON.parse(localStorage.getItem('tasks'));
+  }
 }
